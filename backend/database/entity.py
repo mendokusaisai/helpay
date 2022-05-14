@@ -1,20 +1,27 @@
 from google.cloud import datastore
-from log import logger
 
 from database.database import Database
 
 
 class Entity:
-    def __init__(self, entity: datastore.Entity) -> None:
+    def __init__(self, entity: datastore.Entity, type: str) -> None:
         self._entity = entity
+        self.type = type
         self._is_dirty = False
 
-    def put(self):
-        if self._is_dirty:
+    def put(self, force=False):
+        if self._is_dirty or force:
             Database.put(self._entuty)
 
+    def delete(self):
+        Database.delete(self.type, self.id)
+
     def to_dict(self) -> dict:
-        dict_entity = {"id": self._entity.key.id}
+        dict_entity = {"id": self.id}
         dict_entity.update(self._entity)
 
         return dict_entity
+
+    @property
+    def id(self) -> int:
+        return self._entity.id

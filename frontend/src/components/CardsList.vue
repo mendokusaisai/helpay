@@ -8,8 +8,8 @@
       <li v-for="card in cards" v-bind:key="card.id">
         <!--カード情報-->
         <div class="card">
-          <input type="text" v-model="card.name" />
-          <input type="text" v-model="card.point" />
+          <input name="name" type="text" v-model="card.name" />
+          <input name="point" type="text" v-model="card.point" />
           <!-- 対象設定をここで行う -->
           <div v-for="(member, key) in members" v-bind:key="key">
             <input

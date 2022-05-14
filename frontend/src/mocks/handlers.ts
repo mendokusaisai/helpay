@@ -2,7 +2,7 @@ import { rest } from "msw";
 
 export const handlers = [
   rest.get("/api/cards/", (_req, res, ctx) => {
-    let data = [
+    const data = [
       {
         id: 1,
         name: "皿洗い",
@@ -25,7 +25,7 @@ export const handlers = [
         targets: [{ id: 2, name: "花子", point: 500 }],
       },
     ];
-    data = [];
+
     return res(
       ctx.status(200),
 
