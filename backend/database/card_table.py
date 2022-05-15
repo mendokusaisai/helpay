@@ -39,8 +39,9 @@ class CardTable(Table):
     def search_card(self, _id: int) -> Optional[T_ENTITY]:
         return self.cards.get(_id)
 
-    def update_card(self, card: datastore.Entity) -> None:
-        pass
+    def save_all(self) -> None:
+        for card in self.cards:
+            card.put()
 
     def delete_card(self, _id: int) -> None:
         for card in self.cards.copy():

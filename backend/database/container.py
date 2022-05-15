@@ -24,7 +24,7 @@ class Container(Generic[T_ENTITY]):
         for entity in self._entities:
             if entity.id == _id:
                 return entity
-        return None
+        raise KeyError(f"id:{_id} is not found")
 
     def append(self, entity: T_ENTITY) -> None:
         self._entities.append(entity)

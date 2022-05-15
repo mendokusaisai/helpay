@@ -1,5 +1,3 @@
-# from __future__ import annotations
-
 from google.cloud import datastore
 
 from database.entity import Entity
@@ -16,6 +14,8 @@ class Card(Entity):
 
     @name.setter
     def name(self, value: str) -> None:
+        if not isinstance(value, str):
+            value = str(value)
         if self._entity["name"] != value:
             self._entity["name"] = value
             self._is_dirty = True
@@ -26,6 +26,8 @@ class Card(Entity):
 
     @point.setter
     def point(self, value: int) -> None:
+        if not isinstance(value, int):
+            value = int(value)
         if self._entity["point"] != value:
             self._entity["point"] = value
             self._is_dirty = True

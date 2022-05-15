@@ -3,7 +3,7 @@
   <div class="cards_list">
     <!-- 追加ボタン -->
     <button v-on:click="addCard">追加</button>
-    <button>保存?</button>
+    <button v-on:click="saveCards">保存?</button>
     <ul>
       <li v-for="card in cards" v-bind:key="card.id">
         <!--カード情報-->
@@ -31,6 +31,13 @@
 </template>
 
 <script lang="ts">
+export interface CardPayload {
+  id: number;
+  name: string;
+  point: number;
+  targets: Array<number>;
+}
+
 import axios from "axios";
 import { defineComponent } from "vue";
 import { Card, Member } from "../interface";
@@ -80,7 +87,20 @@ export default defineComponent({
       });
     },
     saveCards: function () {
-      axios.post("api/cards/save/", this.cards).then((response) => {
+      var payload: CardPayload[] = [];
+      this.cards.forEach((element: Card) => {
+        var _target: number[] = [];
+        element["targets"].forEach((member: Member) => {
+          _target.push(member["id"]);
+        });
+        payload.push({
+          id: element["id"],
+          name: element["name"],
+          point: element["point"],
+          targets: _target,
+        });
+      });
+      axios.post("api/cards/save/", payload).then((response) => {
         console.log(response.data);
       });
     },
