@@ -12,6 +12,7 @@ class Entity:
     def put(self, force=False):
         if self._is_dirty or force:
             Database.put(self._entity)
+            self._is_dirty = False
 
     def delete(self):
         Database.delete(self.type, self.id)

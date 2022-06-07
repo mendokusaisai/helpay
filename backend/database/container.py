@@ -1,4 +1,4 @@
-from typing import Generic, Optional, TypeVar
+from typing import Generic, TypeVar
 
 from database.entity import Entity
 
@@ -20,7 +20,10 @@ class Container(Generic[T_ENTITY]):
         self._cnt += 1
         return result
 
-    def get(self, _id: int) -> Optional[T_ENTITY]:
+    def __len__(self):
+        return len(self._entities)
+
+    def get(self, _id: int) -> T_ENTITY:
         for entity in self._entities:
             if entity.id == _id:
                 return entity

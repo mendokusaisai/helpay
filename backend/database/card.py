@@ -37,8 +37,8 @@ class Card(Entity):
         return self._entity["targets"]
 
     @targets.setter
-    def targets(self, value: list[Member]) -> None:
+    def targets(self, value: list) -> None:
         _targets = self.to_dict()["targets"]
-        if set(_targets) != set(value):
+        if _targets != value:
             self._entity["targets"] = value
             self._is_dirty = True

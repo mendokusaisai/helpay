@@ -3,13 +3,19 @@
   <div class="cards_list">
     <!-- 追加ボタン -->
     <button v-on:click="addCard">追加</button>
-    <button v-on:click="saveCards">保存?</button>
+    <button v-on:click="saveCards">保存</button>
     <ul>
       <li v-for="card in cards" v-bind:key="card.id">
         <!--カード情報-->
         <div class="card">
-          <input name="name" type="text" v-model="card.name" />
-          <input name="point" type="text" v-model="card.point" />
+          <div>
+            name:
+            <input name="name" type="text" v-model="card.name" />
+          </div>
+          <div>
+            point:
+            <input name="point" type="number" v-model="card.point" />
+          </div>
           <!-- 対象設定をここで行う -->
           <div v-for="(member, key) in members" v-bind:key="key">
             <input

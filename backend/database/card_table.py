@@ -1,11 +1,10 @@
-from typing import Optional
-
 from google.cloud import datastore
 from log import logger
 
 from database.card import Card
 from database.container import T_ENTITY, Container
 from database.database import Database
+from database.member import Member
 from database.table import Table
 
 
@@ -16,8 +15,7 @@ class CardTable(Table):
         return cls._instance
 
     def __init__(self) -> None:
-        super().__init__()
-        self.cards = self.get_all_cards()
+        super().__init__(self.get_all_cards())
 
     def create_card(self) -> Card:
         _entity = datastore.Entity(Database.client.key("Card"))
@@ -26,25 +24,28 @@ class CardTable(Table):
         _entity["targets"] = []
         card = Card(_entity)
         card.put(force=True)
-        self.cards.append(card)
+        self.entities.append(card)
         return card
 
     def get_all_cards(self) -> Container:
         query = Database.client.query(kind="Card")
-        for ent in query.fetch():
-            logger.debug(ent)
-        self.cards = Container([Card(entity) for entity in query.fetch()])
-        return self.cards
+        self.entities = Container([Card(entity) for entity in query.fetch()])
+        query = Database.client.query(kind="Member")
+        members = Container([Member(entity) for entity in query.fetch()])
+        for entity in self.entities:
+            entity.targets = [members.get(target_id).to_dict() for target_id in entity.targets]
 
-    def search_card(self, _id: int) -> Optional[T_ENTITY]:
-        return self.cards.get(_id)
+        return self.entities
 
-    def save_all(self) -> None:
-        for card in self.cards:
-            card.put()
+    def search_card(self, _id: int) -> T_ENTITY:
+        if not isinstance(_id, int):
+            _id = int(_id)
+        return self.entities.get(_id)
 
     def delete_card(self, _id: int) -> None:
-        for card in self.cards.copy():
+        if not isinstance(_id, int):
+            _id = int(_id)
+        for card in self.entities.copy():
             if card.id == _id:
                 card.delete()
-                self.cards.remove(card)
+                self.entities.remove(card)

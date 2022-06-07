@@ -1,4 +1,4 @@
-import backend.main as main
+import main
 
 
 def test_index():
@@ -7,4 +7,3 @@ def test_index():
 
     r = client.get("/")
     assert r.status_code == 200
-    assert "Hello World" in r.data.decode("utf-8")
