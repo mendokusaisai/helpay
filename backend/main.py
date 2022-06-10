@@ -1,7 +1,10 @@
+import os
+
 from flask import Flask, render_template
 
 from api.card_api import card_api_bp
 from api.member_api import member_api_bp
+from database.database import Database
 
 app = Flask(
     __name__,
@@ -19,4 +22,4 @@ def index(path: str) -> str:
 
 
 if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=8080, debug=True)
+    app.run(host="127.0.0.1", port=os.environ["PORT"], debug=True)

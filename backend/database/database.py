@@ -6,9 +6,17 @@ from log import logger
 
 
 class Database(object):
-    namespace: str = os.environ["DATASTORE_NAMESPACE"]
-    logger.info(f"namespace={namespace}")
-    client = datastore.Client(namespace=namespace)
+    namespace: str = ""
+    if "DATASTORE_NAMESPACE" in os.environ.keys():
+        namespace: str = os.environ["DATASTORE_NAMESPACE"]
+    client: datastore.Client = datastore.Client(namespace=namespace)
+    logger.info("Database namespace set to default")
+
+    @classmethod
+    def set_namespace(cls, namespace:str):
+        logger.info(f"namespace={namespace}")
+        cls.namespace = namespace
+        cls.client = datastore.Client(namespace=namespace)
 
     @classmethod
     def put(cls, e: datastore.Entity) -> None:
