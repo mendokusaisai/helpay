@@ -1,6 +1,6 @@
 version: 2
 orbs:
-    gcp-cloud-run: circleci/gcp-cloud-run@1.0.2
+  gcp-cloud-run: circleci/gcp-cloud-run@1.0.2
 
 jobs:
   build:
@@ -44,9 +44,9 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "packages-lock.json" }}
 
-  build:
+  deploy:
     docker:
-        - image: node:16.14.2 # nodeのバージョンは開発環境に合わせる
+      - image: node:16.14.2 # nodeのバージョンは開発環境に合わせる
 
     working_directory: ~/repo # 作業フォルダ
     steps:
@@ -54,5 +54,3 @@ jobs:
         working_directory: frontend
         name: deploy
         command: gloud app deploy
-
-
