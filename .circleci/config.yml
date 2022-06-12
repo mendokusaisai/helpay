@@ -42,7 +42,7 @@ jobs:
             - node_modules
             - dist
             - package.json
-          key: v1-dependencies-{{ checksum "frontend/packages-lock.json" }}
+          key: v1-dependencies-{{ checksum "frontend/package-lock.json" }}
 deploy:
   docker:
     - image: google/cloud-sdk
@@ -55,7 +55,7 @@ deploy:
     # キャッシュがある場合はキャッシュから依存関係を復元
     - restore_cache:
         keys:
-          - v1-dependencies-{{ checksum "frontend/packages-lock.json" }}
+          - v1-dependencies-{{ checksum "frontend/package-lock.json" }}
           - v1-dependencies-
     - run:
         working_directory: backend
