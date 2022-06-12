@@ -14,9 +14,8 @@ jobs:
 
       # キャッシュがある場合はキャッシュから依存関係を復元
       - restore_cache:
-          working_directory: frontend
           keys:
-            - v1-dependencies-{{ checksum "packages-lock.json" }}
+            - v1-dependencies-{{ checksum "frontend/packages-lock.json" }}
             - v1-dependencies-
 
       # 依存関係のインストール
@@ -39,14 +38,26 @@ jobs:
 
       # キャッシュの保存
       - save_cache:
-          working_directory: frontend
           paths:
             - node_modules
             - dist
             - package.json
-          key: v1-dependencies-{{ checksum "packages-lock.json" }}
+          key: v1-dependencies-{{ checksum "frontend/packages-lock.json" }}
+deploy:
+  docker:
+    - image: google/cloud-sdk
 
-      - run:
-          working_directory: backend
-          name: deploy
-          command: gloud app deploy
+  working_directory: ~/repo # 作業フォルダ
+
+  steps:
+    - checkout # プロジェクトに追加したGitHubリポジトリをworking_directoryにcloneしてcheckout
+
+    # キャッシュがある場合はキャッシュから依存関係を復元
+    - restore_cache:
+        keys:
+          - v1-dependencies-{{ checksum "frontend/packages-lock.json" }}
+          - v1-dependencies-
+    - run:
+        working_directory: backend
+        name: deploy
+        command: gloud app deploy
