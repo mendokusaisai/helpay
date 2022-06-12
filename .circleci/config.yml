@@ -50,15 +50,8 @@ jobs:
     working_directory: ~/repo # 作業フォルダ
     executor: gcp-cli/default
     steps:
-      - checkout # プロジェクトに追加したGitHubリポジトリをworking_directoryにcloneしてcheckout
       - gcp-cli/install
       - gcp-cli/initialize
-
-      # キャッシュがある場合はキャッシュから依存関係を復元
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "frontend/package-lock.json" }}
-            - v1-dependencies-
       - run:
           name: deploy
           command: gcloud app deploy
