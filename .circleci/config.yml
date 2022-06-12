@@ -61,3 +61,10 @@ deploy:
         working_directory: backend
         name: deploy
         command: gloud app deploy
+
+workflows:
+  version: 2.1
+  build_and_deploy:
+    jobs:
+      - build
+      - deploy
