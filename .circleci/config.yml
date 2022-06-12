@@ -60,7 +60,6 @@ jobs:
             - v1-dependencies-{{ checksum "frontend/package-lock.json" }}
             - v1-dependencies-
       - run:
-          working_directory: backend
           name: deploy
           command: gcloud app deploy
 
