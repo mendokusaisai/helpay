@@ -5,7 +5,7 @@ orbs:
 jobs:
   build:
     docker:
-      - image: node:16.14.2 # nodeのバージョンは開発環境に合わせる
+      - image: cimg/node:16.14.2 # nodeのバージョンは開発環境に合わせる
 
     working_directory: ~/repo # 作業フォルダ
 
@@ -46,19 +46,6 @@ jobs:
             - package.json
           key: v1-dependencies-{{ checksum "packages-lock.json" }}
 
-  deploy-job:
-    docker:
-      - image: node:16.14.2 # nodeのバージョンは開発環境に合わせる
-
-    working_directory: ~/repo # 作業フォルダ
-    steps:
-      - checkout
-
-      - restore_cache:
-          working_directory: frontend
-          keys:
-            - v1-dependencies-{{ checksum "packages-lock.json" }}
-            - v1-dependencies-
       - run:
           working_directory: backend
           name: deploy
