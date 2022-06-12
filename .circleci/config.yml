@@ -43,6 +43,10 @@ jobs:
             - dist
             - package.json
           key: v1-dependencies-{{ checksum "frontend/package-lock.json" }}
+      - persist_to_workspace:
+          root: repo
+          paths:
+            - echo-output
   deploy:
     docker:
       - image: cimg/node:16.14.2
@@ -50,6 +54,8 @@ jobs:
     working_directory: ~/repo # 作業フォルダ
     executor: gcp-cli/default
     steps:
+      - attach_workspace:
+          at: /tmp/repo
       - gcp-cli/install
       - gcp-cli/initialize
       - run:
