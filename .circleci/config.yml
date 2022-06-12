@@ -51,6 +51,6 @@ jobs:
     working_directory: ~/repo # 作業フォルダ
     steps:
       - run:
-        working_directory: frontend
-        name: deploy
-        command: gloud app deploy
+          working_directory: backend
+          name: deploy
+          command: gloud app deploy
