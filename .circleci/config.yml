@@ -23,7 +23,7 @@ jobs:
       - run:
           working_directory: frontend
           name: Install dependencies # CircleCI上で表示される処理名(任意)
-          command: npm install # 処理コマンド
+          command: npm ci # 処理コマンド
 
       # ビルド
       - run:
