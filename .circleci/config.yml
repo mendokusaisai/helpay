@@ -1,11 +1,11 @@
-version: 2
+version: 2.1
 orbs:
   gcp-cloud-run: circleci/gcp-cloud-run@1.0.2
 
 jobs:
   build:
     docker:
-      - image: cimg/node:16.14.2 # nodeのバージョンは開発環境に合わせる
+      - image: circleci/node:16.14.2 # nodeのバージョンは開発環境に合わせる
 
     working_directory: ~/repo # 作業フォルダ
 
