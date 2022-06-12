@@ -48,9 +48,8 @@ jobs:
       - image: cimg/node:16.14.2
 
     working_directory: ~/repo # 作業フォルダ
-
+    executor: gcp-cli/default
     steps:
-      executor: gcp-cli/default
       - checkout # プロジェクトに追加したGitHubリポジトリをworking_directoryにcloneしてcheckout
       - gcp-cli/install
       - gcp-cli/initialize
