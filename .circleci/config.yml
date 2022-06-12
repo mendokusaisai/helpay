@@ -43,24 +43,24 @@ jobs:
             - dist
             - package.json
           key: v1-dependencies-{{ checksum "frontend/package-lock.json" }}
-deploy:
-  docker:
-    - image: google/cloud-sdk
+  deploy:
+    docker:
+      - image: google/cloud-sdk
 
-  working_directory: ~/repo # 作業フォルダ
+    working_directory: ~/repo # 作業フォルダ
 
-  steps:
-    - checkout # プロジェクトに追加したGitHubリポジトリをworking_directoryにcloneしてcheckout
+    steps:
+      - checkout # プロジェクトに追加したGitHubリポジトリをworking_directoryにcloneしてcheckout
 
-    # キャッシュがある場合はキャッシュから依存関係を復元
-    - restore_cache:
-        keys:
-          - v1-dependencies-{{ checksum "frontend/package-lock.json" }}
-          - v1-dependencies-
-    - run:
-        working_directory: backend
-        name: deploy
-        command: gloud app deploy
+      # キャッシュがある場合はキャッシュから依存関係を復元
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "frontend/package-lock.json" }}
+            - v1-dependencies-
+      - run:
+          working_directory: backend
+          name: deploy
+          command: gloud app deploy
 
 workflows:
   version: 2.1
