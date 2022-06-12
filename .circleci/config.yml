@@ -59,10 +59,10 @@ jobs:
           keys:
             - v1-dependencies-{{ checksum "frontend/package-lock.json" }}
             - v1-dependencies-
-      - run:
+      - gcp-cli/deploy:
           working_directory: backend
           name: deploy
-          command: gloud app deploy
+          command: gcloud app deploy
 
 workflows:
   version: 2.1
