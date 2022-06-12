@@ -44,7 +44,7 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "packages-lock.json" }}
 
-  deploy:
+  deploy-job:
     docker:
       - image: node:16.14.2 # nodeのバージョンは開発環境に合わせる
 
