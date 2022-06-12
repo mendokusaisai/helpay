@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  gcp-cli: circleci/gcp-cli@2.1.0
+  gcp-cli: circleci/gcp-cli@2.4.1
 
 jobs:
   build:
@@ -51,8 +51,7 @@ jobs:
     executor: gcp-cli/default
     steps:
       - checkout # プロジェクトに追加したGitHubリポジトリをworking_directoryにcloneしてcheckout
-      - gcp-cli/install
-      - gcp-cli/initialize
+      - gcp-cli/install_and_initialize_cli
 
       # キャッシュがある場合はキャッシュから依存関係を復元
       - restore_cache:
