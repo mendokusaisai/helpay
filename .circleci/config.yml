@@ -1,0 +1,58 @@
+version: 2
+orbs:
+    gcp-cloud-run: circleci/gcp-cloud-run@1.0.2
+
+jobs:
+  build:
+    docker:
+      - image: node:16.14.2 # nodeのバージョンは開発環境に合わせる
+
+    working_directory: ~/repo # 作業フォルダ
+
+    steps:
+      - checkout # プロジェクトに追加したGitHubリポジトリをworking_directoryにcloneしてcheckout
+
+      # キャッシュがある場合はキャッシュから依存関係を復元
+      - restore_cache:
+          working_directory: frontend
+          keys:
+            - v1-dependencies-{{ checksum "packages-lock.json" }}
+            - v1-dependencies-
+
+      # 依存関係のインストール
+      - run:
+          working_directory: frontend
+          name: Install dependencies # CircleCI上で表示される処理名(任意)
+          command: npm install # 処理コマンド
+
+      # ビルド
+      - run:
+          working_directory: frontend
+          name: Build
+          command: npm run build
+
+      # ビルドの確認
+      - run:
+          working_directory: frontend
+          name: Check dist
+          command: ls -la dist
+
+      # キャッシュの保存
+      - save_cache:
+          working_directory: frontend
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "packages-lock.json" }}
+
+  build:
+    docker:
+        - image: node:16.14.2 # nodeのバージョンは開発環境に合わせる
+
+    working_directory: ~/repo # 作業フォルダ
+    steps:
+      - run:
+        working_directory: frontend
+        name: deploy
+        command: gloud app deploy
+
+
