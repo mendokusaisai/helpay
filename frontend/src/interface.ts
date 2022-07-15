@@ -2,7 +2,7 @@ export interface Card {
   id: number;
   name: string;
   point: number;
-  targets: Array<Member>;
+  targets: Array<number>;
 }
 
 export interface Member {

@@ -1,35 +1,46 @@
 <template>
-  <div class="cards_board">
-    <div>
-      <button v-on:click="save">保存</button>
-    </div>
-    <ul>
-      <li v-for="member in members" v-bind:key="member.id">
-        <p>{{ member.name }}</p>
-        <p>{{ member.point }}point</p>
-      </li>
-    </ul>
-
-    <ul>
-      <li v-for="card in cards" v-bind:key="card.name">
-        <!--カード情報-->
-        <div class="card">
-          <p>{{ card.name }}</p>
-          <p>{{ card.point }}point</p>
-          <!-- ポイント付与ボタン -->
-          <div v-for="(member, key) in card.targets" v-bind:key="key">
-            <button
-              :id="card.id + 'to' + member.id"
-              v-on:click="addPoint(member.id, card.id, card.point)"
-              class=""
-            >
-              {{ member.name }}
-            </button>
-          </div>
-        </div>
-      </li>
-    </ul>
-  </div>
+  <v-container>
+    <v-btn v-on:click="save">保存</v-btn>
+    <v-container>
+      <v-row dense>
+        <v-col v-for="member in members" :key="member.id" :cols="6">
+          <v-card>
+            <v-card-title>{{ member.name }}</v-card-title>
+            <v-card-text> {{ member.point }} point </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
+    <v-container>
+      <v-row dense>
+        <v-col v-for="card in cards" :key="card.name" :cols="6">
+          <!--カード情報-->
+          <v-card>
+            <v-card-title>{{ card.name }}</v-card-title>
+            <v-card-text>{{ card.point }} point</v-card-text>
+            <v-divider></v-divider>
+            <!-- ポイント付与ボタン -->
+            <v-card-text>
+              <v-chip-group column multiple v-model="selected[card.id]">
+                <v-chip
+                  v-for="member in members"
+                  v-bind:key="member.name"
+                  :active="member.id in card.targets"
+                  :id="card.id + 'to' + member.id"
+                  v-on:click="addPoint(member.id, card.id, card.point)"
+                  filter
+                  outlined
+                >
+                  {{ member.name }}
+                </v-chip>
+              </v-chip-group>
+              <div>selected : {{ selected[card.id] }}</div>
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-container>
 </template>
 
 <script lang="ts">
@@ -43,6 +54,7 @@ export default defineComponent({
     return {
       cards: Array<Card>(),
       members: Array<Member>(),
+      selected: {},
     };
   },
   mounted() {
@@ -52,6 +64,12 @@ export default defineComponent({
     axios.get("/api/members/").then((response) => {
       this.members = response["data"];
     });
+    let o: { [key: number]: [] };
+    o = {};
+    for (var c of this.cards) {
+      o[c.id] = [];
+    }
+    this.selected = o;
   },
   methods: {
     addPoint: function (memberId: number, cardId: number, cardPoint: number) {
@@ -87,27 +105,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-
-a {
-  color: #42b983;
-}
-button.pushed {
-  background-color: #9191e8;
-}
-</style>

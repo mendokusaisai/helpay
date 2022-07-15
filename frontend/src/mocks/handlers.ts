@@ -7,22 +7,19 @@ export const handlers = [
         id: 1,
         name: "皿洗い",
         point: 100,
-        targets: [
-          { id: 1, name: "太郎", point: 1000 },
-          { id: 2, name: "花子", point: 500 },
-        ],
+        targets: [1, 2],
       },
       {
         id: 2,
         name: "勉強",
         point: 200,
-        targets: [{ id: 1, name: "太郎", point: 1000 }],
+        targets: [1],
       },
       {
         id: 3,
         name: "お風呂掃除",
         point: 300,
-        targets: [{ id: 2, name: "花子", point: 500 }],
+        targets: [2],
       },
     ];
 

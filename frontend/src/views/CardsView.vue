@@ -1,8 +1,7 @@
 <template>
-  <div class="cards">
-    <h1>This is an cards page</h1>
+  <dv-container class="cards">
     <CardsList />
-  </div>
+  </dv-container>
 </template>
 
 <script lang="ts">

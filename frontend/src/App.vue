@@ -1,33 +1,35 @@
 <template>
-  <div>
-    <nav>
-      <router-link to="/">Helpay</router-link> |
-      <router-link to="/cards">Cards</router-link> |
-      <router-link to="/members">Members</router-link> |
-    </nav>
-    <router-view />
-  </div>
+  <v-app>
+    <v-app-bar app>
+      <v-app-bar-title>Helpay</v-app-bar-title>
+      <v-spacer />
+      <v-toolbar-items>
+        <v-tabs align-with-title>
+          <v-tab flat to="/">helpay</v-tab>
+          <v-tab flat to="/cards">cards</v-tab>
+          <v-tab flat to="/members">members</v-tab>
+          <v-tab flat to="/test">test</v-tab>
+        </v-tabs>
+      </v-toolbar-items>
+    </v-app-bar>
+    <v-main>
+      <v-content>
+        <router-view />
+      </v-content>
+    </v-main>
+  </v-app>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script lang="ts">
+import { defineComponent } from "vue";
 
-nav {
-  padding: 30px;
-}
+export default defineComponent({
+  name: "App",
 
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+  data() {
+    return {
+      //
+    };
+  },
+});
+</script>

@@ -1,39 +1,55 @@
 <template>
   <!-- カード一覧 -->
-  <div class="cards_list">
+  <v-container>
     <!-- 追加ボタン -->
-    <button v-on:click="addCard">追加</button>
-    <button v-on:click="saveCards">保存</button>
-    <ul>
-      <li v-for="card in cards" v-bind:key="card.id">
-        <!--カード情報-->
-        <div class="card">
-          <div>
-            name:
-            <input name="name" type="text" v-model="card.name" />
-          </div>
-          <div>
-            point:
-            <input name="point" type="number" v-model="card.point" />
-          </div>
-          <!-- 対象設定をここで行う -->
-          <div v-for="(member, key) in members" v-bind:key="key">
-            <input
-              :id="'card' + card.id + 'member' + key"
-              type="checkbox"
-              :value="member"
-              v-model="card.targets"
-            />
-            <label :for="'card' + card.id + 'member' + key">{{
-              member.name
-            }}</label>
-          </div>
-          <!-- 削除ボタン -->
-          <button v-on:click="deleteCard(card.id)">削除</button>
-        </div>
-      </li>
-    </ul>
-  </div>
+    <v-btn v-on:click="addCard">追加</v-btn>
+    <v-btn v-on:click="saveCards">保存</v-btn>
+    <v-container>
+      <v-row dense>
+        <v-col dense v-for="card in cards" v-bind:key="card.id" :cols="3">
+          <!--カード情報-->
+          <v-card>
+            <v-simple-table>
+              <tbody>
+                <tr>
+                  <td>
+                    <v-text-field v-model="card.name" />
+                  </td>
+                  <td>
+                    <v-text-field v-model="card.point" />
+                  </td>
+                </tr>
+              </tbody>
+            </v-simple-table>
+
+            <!-- 削除ボタン
+            <v-card-actions>
+              <v-btn v-on:click="deleteCard(card.id)">削除</v-btn>
+            </v-card-actions>-->
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
+    <v-list>
+      <v-list-item v-for="file in files" :key="file.title">
+        <v-list-item-avatar>
+          <v-icon :class="file.color" dark v-text="file.icon"></v-icon>
+        </v-list-item-avatar>
+
+        <v-list-item-content>
+          <v-list-item-title v-text="file.title"></v-list-item-title>
+
+          <v-list-item-subtitle v-text="file.subtitle"></v-list-item-subtitle>
+        </v-list-item-content>
+
+        <v-list-item-action>
+          <v-btn icon>
+            <v-icon color="grey lighten-1">mdi-information</v-icon>
+          </v-btn>
+        </v-list-item-action>
+      </v-list-item>
+    </v-list>
+  </v-container>
 </template>
 
 <script lang="ts">
@@ -95,15 +111,11 @@ export default defineComponent({
     saveCards: function () {
       var payload: CardPayload[] = [];
       this.cards.forEach((element: Card) => {
-        var _target: number[] = [];
-        element["targets"].forEach((member: Member) => {
-          _target.push(member["id"]);
-        });
         payload.push({
           id: element["id"],
           name: element["name"],
           point: element["point"],
-          targets: _target,
+          targets: element["targets"],
         });
       });
       axios.post("api/cards/save/", payload).then((response) => {
@@ -113,24 +125,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-
-a {
-  color: #42b983;
-}
-</style>
